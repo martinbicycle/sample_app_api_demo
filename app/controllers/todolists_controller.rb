@@ -4,8 +4,9 @@ class TodolistsController < ApplicationController
   end
   def create
     list = List.new(list_params)
+    list.score = Language.get_data(list_params[:body])
     list.save
-    tags = Vision.get_image_data(list.image)    
+    tags = Vision.get_image_data(list.image)
     tags.each do |tag|
       list.tags.create(name: tag)
     end
@@ -22,6 +23,7 @@ class TodolistsController < ApplicationController
   end
   def update
     list = List.find(params[:id])
+    list.score = Language.get_data(list_params[:body])
     list.update(list_params)
     redirect_to todolist_path(list.id)
   end
